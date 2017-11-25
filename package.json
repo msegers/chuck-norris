@@ -1,0 +1,25 @@
+{
+  "name": "chuck-norris",
+  "version": "1.0.0",
+  "description": "Chuck Norris Facts in Angular",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/msegers/chuck-norris.git"
+  },
+  "keywords": [
+    "Chuck",
+    "Norris",
+    "Angular"
+  ],
+  "author": "Mathijs Segers \u001b[H\u001b[F",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/msegers/chuck-norris/issues"
+  },
+  "homepage": "https://github.com/msegers/chuck-norris#readme"
+}
