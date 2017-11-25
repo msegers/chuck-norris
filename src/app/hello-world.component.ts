@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-    selector: 'hello-world',
-    template: `Hello {{target}}`
+    selector: "hello-world",
+    template: `Hello {{target}}`,
 })
 export class HelloWorld {
-    public target = 'World'
+    public target = "World";
 }

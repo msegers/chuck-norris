@@ -8,5 +8,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitAny": true
-  }
+  },
+  "include": [
+    "src/**/*",
+    "typings/**/*.d.ts"
+  ]
 }
