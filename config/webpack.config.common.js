@@ -14,9 +14,14 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.ts$/, use: ['ts-loader', 'angular2-template-loader'] },
+            { test: /\.ts$/, use: ['angular2-template-loader', 'ts-loader'] },
             { test: /\.html$/, use: 'html-loader' },
-            { test: /\.ts$/, loader: 'tslint-loader', enforce: 'pre' }
+            { test: /\.ts$/, use: 'tslint-loader', enforce: 'pre' },
+            {
+                test: /\.css$/,
+                include: path.resolve(__dirname, '..', 'src', 'app'),
+                loader: ['css-to-string-loader','css-loader']
+            }
         ]
     },
     plugins: [
