@@ -13,6 +13,7 @@ import {Component, ViewEncapsulation} from "@angular/core";
     <mat-toolbar color="primary">
         <h1>Chuck Norris Facts</h1>
     </mat-toolbar>
+    <fact-list></fact-list>
 `,
 })
 export class AppComponent {

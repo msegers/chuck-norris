@@ -1,12 +1,14 @@
 import { AppComponent } from "./app.component";
 import { TestBed } from "@angular/core/testing";
-import { MatCommonModule, MatToolbarModule } from "@angular/material";
+import { MatToolbarModule } from "@angular/material";
+import { FactModule } from "../fact/fact.module";
 
 describe("AppComponent", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
                 MatToolbarModule,
+                FactModule
             ],
             declarations: [
                 AppComponent
@@ -14,7 +16,7 @@ describe("AppComponent", () => {
         }).compileComponents();
     });
 
-    it("be able to instantiate the app", () => {
+    it("Should be able to instantiate the app", () => {
         const appComponent = TestBed.createComponent(AppComponent);
         const instance = appComponent.debugElement.componentInstance;
         expect(instance).toBeTruthy();
@@ -22,8 +24,13 @@ describe("AppComponent", () => {
 
     it("Should contain an app (tool)bar with the Name in header", () => {
         let appComponent = TestBed.createComponent(AppComponent);
-        appComponent.detectChanges();
         let el = appComponent.debugElement.nativeElement;
         expect(el.querySelector('h1').textContent).toContain('Chuck Norris Facts');
+    });
+
+    it ("Should contain a FactList", () => {
+        let appComponent = TestBed.createComponent(AppComponent);
+        let el = appComponent.debugElement.nativeElement;
+        expect(el.querySelector('fact-list')).toBeTruthy();
     });
 });
