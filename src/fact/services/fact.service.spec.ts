@@ -1,8 +1,8 @@
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {TestBed, inject} from "@angular/core/testing";
-import {FactService} from "./fact.service";
-import {Fact} from "../models/fact";
-import {FactHttpResponse} from "../models/factHttpResponse";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { TestBed, inject } from "@angular/core/testing";
+import { FactService } from "./fact.service";
+import { Fact} from "../models/fact";
+import { FactHttpResponse } from "../models/factHttpResponse";
 
 
 describe("FactService", () => {
@@ -39,9 +39,6 @@ describe("FactService", () => {
         factService.loadFacts();
 
         mockRequest.flush(factResponse);
-    });
-
-    afterEach(inject([HttpTestingController], (httpMock: HttpTestingController) => {
         httpMock.verify();
-    }));
+    });
 });

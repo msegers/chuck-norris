@@ -1,8 +1,8 @@
 import { TestBed } from "@angular/core/testing";
-import { MatListModule } from "@angular/material";
+import {MatButtonModule, MatCardModule, MatIconModule, MatListModule} from "@angular/material";
 import { FactListComponent } from "./fact-list.component";
-import {BrowserModule} from "@angular/platform-browser";
-import {FactService} from "../services/fact.service";
+import { BrowserModule } from "@angular/platform-browser";
+import { FactService } from "../services/fact.service";
 
 
 describe("FactList", () => {
@@ -10,12 +10,16 @@ describe("FactList", () => {
     beforeEach(() => {
 
         mockFactService = {
-            subscribe: (f:Function) => {}
+            subscribe: (f:Function) => {},
+            loadFacts: () => {},
         } as any as FactService;
 
         TestBed.configureTestingModule({
             imports: [
                 BrowserModule,
+                MatButtonModule,
+                MatCardModule,
+                MatIconModule,
                 MatListModule,
             ],
             providers: [
@@ -45,6 +49,21 @@ describe("FactList", () => {
         ];
         factList.detectChanges();
         el = factList.debugElement.nativeElement;
-        expect(el.querySelectorAll('mat-list-item').length).toBe(3);
+        var listItems = el.querySelectorAll('mat-list-item');
+        expect(listItems.length).toBe(3);
+        expect(listItems[0].querySelector('mat-icon').textContent).toBe("favorite_border");
+        expect(listItems[1].querySelector('mat-icon').textContent).toBe("favorite");
+
+    });
+
+    it("Should call FactService loadFacts when clicking the loadRandom button", () => {
+        spyOn(mockFactService, "loadFacts");
+
+        let factList = TestBed.createComponent(FactListComponent);
+        factList.detectChanges();
+        factList.debugElement.nativeElement.querySelector('[mat-button]').click();
+
+        expect(mockFactService.loadFacts).toHaveBeenCalled();
+
     });
 });
