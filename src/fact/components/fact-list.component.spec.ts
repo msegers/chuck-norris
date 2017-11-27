@@ -2,14 +2,24 @@ import { TestBed } from "@angular/core/testing";
 import { MatListModule } from "@angular/material";
 import { FactListComponent } from "./fact-list.component";
 import {BrowserModule} from "@angular/platform-browser";
+import {FactService} from "../services/fact.service";
 
 
 describe("FactList", () => {
+    let mockFactService: FactService;
     beforeEach(() => {
+
+        mockFactService = {
+            subscribe: (f:Function) => {}
+        } as any as FactService;
+
         TestBed.configureTestingModule({
             imports: [
                 BrowserModule,
                 MatListModule,
+            ],
+            providers: [
+                {provide: FactService, useValue: mockFactService},
             ],
             declarations: [
                 FactListComponent,
