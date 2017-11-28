@@ -12,6 +12,7 @@ describe("FactList", () => {
         mockFactService = {
             subscribe: (f:Function) => {},
             loadFacts: () => {},
+            toggleFavorite: () => {}
         } as any as FactService;
 
         TestBed.configureTestingModule({
@@ -49,10 +50,12 @@ describe("FactList", () => {
         ];
         factList.detectChanges();
         el = factList.debugElement.nativeElement;
-        var listItems = el.querySelectorAll('mat-list-item');
+        const listItems = el.querySelectorAll('mat-list-item');
         expect(listItems.length).toBe(3);
         expect(listItems[0].querySelector('mat-icon').textContent).toBe("favorite_border");
         expect(listItems[1].querySelector('mat-icon').textContent).toBe("favorite");
+        expect(listItems[1].querySelector('p').textContent).toBe("huckC");
+        expect(listItems[2].querySelector('p').textContent).toBe("uckCh");
 
     });
 
@@ -64,6 +67,21 @@ describe("FactList", () => {
         factList.debugElement.nativeElement.querySelector('[mat-button]').click();
 
         expect(mockFactService.loadFacts).toHaveBeenCalled();
+
+    });
+
+    it("Should call FactService toggleFavorite when clicking a favorite button", () => {
+        spyOn(mockFactService, "toggleFavorite");
+
+        let factList = TestBed.createComponent(FactListComponent);
+        factList.componentInstance.facts = [
+            { id: 1, joke: 'Chuck', favorite: false },
+        ];
+        factList.detectChanges();
+        const el = factList.debugElement.nativeElement;
+        el.querySelector('[mat-icon-button]').click();
+
+        expect(mockFactService.toggleFavorite).toHaveBeenCalled();
 
     });
 });

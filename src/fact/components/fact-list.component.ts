@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 
 import {Fact} from "../models/fact";
 import {FactService} from "../services/fact.service";
@@ -19,7 +19,7 @@ import {FactService} from "../services/fact.service";
     <mat-list *ngIf="facts.length">
         <ng-container *ngFor="let fact of facts">
             <mat-list-item>
-                <button mat-icon-button color="accent">
+                <button (click)="toggleFavorite(fact);" mat-icon-button color="accent">
                     <mat-icon>{{fact.favorite ? 'favorite' : 'favorite_border'}}</mat-icon>
                 </button>
                 <p>{{fact.joke}}</p>
@@ -32,6 +32,8 @@ import {FactService} from "../services/fact.service";
 `,
 })
 export class FactListComponent implements OnInit {
+    @Input()
+    public type: string;
     public facts: Fact[] = [];
 
     constructor(private factService: FactService) { }
@@ -41,6 +43,10 @@ export class FactListComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.factService.subscribe(f => this.facts = f);
+        this.factService.subscribe(this.type, f => this.facts = f);
+    }
+
+    public toggleFavorite(fact: Fact) {
+        this.factService.toggleFavorite(fact);
     }
 }
