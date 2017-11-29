@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import {MatButtonModule, MatCardModule, MatIconModule, MatListModule} from "@angular/material";
+import { MatButtonModule, MatCardModule, MatIconModule, MatListModule } from "@angular/material";
 import { FactListComponent } from "./fact-list.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { FactService } from "../services/fact.service";

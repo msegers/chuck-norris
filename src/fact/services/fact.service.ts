@@ -2,8 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs/Subject";
 
-import {Fact} from "../models/fact";
-import {FactHttpResponse} from "../models/factHttpResponse";
+import { Fact } from "../models/fact";
+import { FactHttpResponse } from "../models/factHttpResponse";
 
 @Injectable()
 export class FactService {
@@ -57,8 +57,11 @@ export class FactService {
         factIndex = this.favorites.findIndex(f => fact.id === f.id);
         if (factIndex !== -1) {
             this.favorites.splice(factIndex, 1);
-        } else {
+        } else if (this.favorites.length < 10) {
             this.favorites.push(fact);
+        } else {
+            this.favorites.length = 10;
+            fact.favorite = false;
         }
 
         this.persistFavorites();

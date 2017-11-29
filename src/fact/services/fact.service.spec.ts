@@ -1,8 +1,8 @@
 import { FactService } from "./fact.service";
 import { Fact} from "../models/fact";
 import { FactHttpResponse } from "../models/factHttpResponse";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {TestBed} from "@angular/core/testing";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { TestBed } from "@angular/core/testing";
 
 
 describe("FactService", () => {
@@ -96,6 +96,22 @@ describe("FactService", () => {
 
         // Wanted to use 1, but TestBed's state is not being reset (It should be actually)
         factService.toggleFavorite({id: 3, joke: "a", favorite: false});
+    });
+
+    it("Should be impossible to set more than 10 favorites", done => {
+        const factService =  TestBed.get(FactService);
+        let doneCounter = 0;
+        factService.subscribe(FactService.FAVORITE, (val: Fact[]) => {
+            expect(val.length).toBeLessThan(11);
+            doneCounter++;
+            if (doneCounter > 10) {
+                done();
+            }
+        });
+
+        for(let i = 0; i < 11; i++) {
+            factService.toggleFavorite({id: i, joke: "a", favorite: false});
+        }
     });
 
 });
