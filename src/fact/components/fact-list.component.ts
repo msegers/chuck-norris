@@ -1,12 +1,18 @@
-import {Component, Input, OnInit} from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 
-import {Fact} from "../models/fact";
-import {FactService} from "../services/fact.service";
+import { Fact } from "../models/fact";
+import { FactService } from "../services/fact.service";
 
 @Component({
     selector: "fact-list",
     styles: [
-`mat-list-item button {
+`
+.mat-list-item {
+    height: auto !important;
+    min-height: 48px;
+}
+
+.mat-list-item button {
     float: right;
 }
 [mat-button] {
@@ -27,9 +33,12 @@ import {FactService} from "../services/fact.service";
             <mat-divider></mat-divider>
         </ng-container>
     </mat-list>
-    <button color="primary" mat-button (click)="loadRandomFacts()">Load Random facts</button>
+    <button *ngIf="isRandom()" color="primary" mat-button (click)="loadRandomFacts()">Load Random facts</button>
+    <button *ngIf="!isRandom()" color="primary" mat-button (click)="toggleRandomFavorites()">Load Random
+        Favorites
+    </button>
 </mat-card>
-`,
+    `,
 })
 export class FactListComponent implements OnInit {
     @Input()
@@ -38,15 +47,23 @@ export class FactListComponent implements OnInit {
 
     constructor(private factService: FactService) { }
 
-    public loadRandomFacts() {
-        this.factService.loadFacts();
-    }
-
     public ngOnInit(): void {
         this.factService.subscribe(this.type, f => this.facts = f);
     }
 
     public toggleFavorite(fact: Fact) {
         this.factService.toggleFavorite(fact);
+    }
+
+    public isRandom() {
+        return this.type === FactService.RANDOM;
+    }
+
+    public loadRandomFacts() {
+        this.factService.loadFacts();
+    }
+
+    public toggleRandomFavorites() {
+        this.factService.toggleRandomFavorites();
     }
 }

@@ -1,5 +1,5 @@
 import { Fact } from "./fact";
 
-export interface FactHttpResponse{
+export interface FactHttpResponse {
     value: Fact[]
 }

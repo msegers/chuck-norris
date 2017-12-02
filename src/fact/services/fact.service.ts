@@ -1,14 +1,17 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import "rxjs/add/observable/interval"; // without unit test fails
+import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
+import { Subscription } from "rxjs/Subscription";
 
+import { NotificationService } from "../../common/services/notification.service";
 import { Fact } from "../models/fact";
 import { FactHttpResponse } from "../models/factHttpResponse";
 
 @Injectable()
-export class FactService {
+export class FactService  {
 
-    // public for testing purposes
     public static readonly CHUCK_NORRIS_API = "http://api.icndb.com/jokes/random/{count}";
     public static readonly RANDOM = "random";
     public static readonly FAVORITE = "favorite";
@@ -18,16 +21,26 @@ export class FactService {
     private favoriteSubject = new Subject();
     private facts: Fact[] = [];
     private favorites: Fact[] = [];
+    private loadRandomObservable: Subscription = null;
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,
+        private notificationService: NotificationService,
+    ) {
         this.retrieveFavorites();
         this.favoriteSubject.next(this.favorites);
     }
 
-    public subscribe(type: string, callback: (value: Fact[]) => void) {
+    public subscribe(type: string, callback: (value: Fact[]) => void): Subscription {
         if (type === FactService.RANDOM) {
+            if (this.facts.length) {
+                callback(this.facts);
+            }
             return this.factSubject.subscribe(callback);
         } else if (type === FactService.FAVORITE) {
+            if (this.favorites.length) {
+                callback(this.favorites);
+            }
             return this.favoriteSubject.subscribe(callback);
         }
     }
@@ -62,11 +75,40 @@ export class FactService {
         } else {
             this.favorites.length = 10;
             fact.favorite = false;
+            this.toggleRandomFavorites(false);
+            this.notificationService.notify("Maximum number of Favorites reached (10).");
         }
 
         this.persistFavorites();
         this.factSubject.next(this.facts);
         this.favoriteSubject.next(this.favorites);
+    }
+
+    public toggleRandomFavorites(enable: boolean = null) {
+        if (this.loadRandomObservable == null && enable !== false) {
+            this.initRandomObservable();
+        } else if (this.loadRandomObservable) {
+            this.loadRandomObservable.unsubscribe();
+            this.loadRandomObservable = null;
+        }
+    }
+
+    public initRandomObservable(): void {
+        this.loadRandomObservable = Observable.interval(5000)
+            .subscribe(() => {
+                this.http.get(FactService.CHUCK_NORRIS_API.replace("{count}", "1"))
+                    .subscribe((data: FactHttpResponse) => {
+                        const fact = data.value[0];
+                        // make sure we don't un-favorite a fact
+                        if (!this.favorites.find(f => f.id === fact.id)) {
+                            this.toggleFavorite(fact);
+                        }
+                    });
+            });
+    }
+
+    public isRandomLoadingActive(): boolean {
+        return !!this.loadRandomObservable;
     }
 
     private persistFavorites() {

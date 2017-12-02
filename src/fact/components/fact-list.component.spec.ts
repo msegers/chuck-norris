@@ -12,7 +12,8 @@ describe("FactList", () => {
         mockFactService = {
             subscribe: (f:Function) => {},
             loadFacts: () => {},
-            toggleFavorite: () => {}
+            toggleFavorite: () => {},
+            toggleRandomFavorites: () => {}
         } as any as FactService;
 
         TestBed.configureTestingModule({
@@ -59,14 +60,28 @@ describe("FactList", () => {
 
     });
 
-    it("Should call FactService loadFacts when clicking the loadRandom button", () => {
+    it("Should call FactService loadFacts when clicking the loadRandom button (when type is random)", () => {
         spyOn(mockFactService, "loadFacts");
 
         let factList = TestBed.createComponent(FactListComponent);
+        factList.componentInstance.type = FactService.RANDOM;
         factList.detectChanges();
         factList.debugElement.nativeElement.querySelector('[mat-button]').click();
 
         expect(mockFactService.loadFacts).toHaveBeenCalled();
+
+    });
+
+    it("Should call FactService toggleRandomFavorites when clicking the toggleRandomFavorites button (when type is Favorites)",
+        () => {
+        spyOn(mockFactService, "toggleRandomFavorites");
+
+        let factList = TestBed.createComponent(FactListComponent);
+        factList.componentInstance.type = FactService.FAVORITE;
+        factList.detectChanges();
+        factList.debugElement.nativeElement.querySelector('[mat-button]').click();
+
+        expect(mockFactService.toggleRandomFavorites).toHaveBeenCalled();
 
     });
 
@@ -84,4 +99,5 @@ describe("FactList", () => {
         expect(mockFactService.toggleFavorite).toHaveBeenCalled();
 
     });
+
 });

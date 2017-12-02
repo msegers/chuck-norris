@@ -14,12 +14,16 @@ import { FactService } from "../fact/services/fact.service";
     <mat-toolbar color="primary">
         <h1>Chuck Norris Facts</h1>
     </mat-toolbar>
-    <fact-list [type]="random"></fact-list>
+    <mat-tab-group md-stretch-tabs>
+        <mat-tab *ngFor="let type of types" [label]="type">
+            <fact-list [type]="type"></fact-list>
+        </mat-tab>
+    </mat-tab-group>
 `,
 })
 export class AppComponent {
-    private random: string;
+    private types: string[] = [];
     constructor() {
-        this.random = FactService.RANDOM;
+        this.types = [FactService.RANDOM, FactService.FAVORITE];
     }
 }

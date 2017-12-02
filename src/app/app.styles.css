@@ -1,13 +1,37 @@
 html, body {
     padding: 0;
     margin: 0;
+    height: 100vh;
+}
+body {
+    display: flex;
+    flex-direction: column;
 }
 
+
+/* mat-tab-group & general layout fixes */
 .content {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
-mat-card {
-    margin-top: 16px;
+app {
+    height: 100vh;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.mat-tab-labels {
+    justify-content: center;
+}
+.mat-tab-group {
+    flex: 1;
+}
+.mat-tab-body-wrapper {
+    height: 100%;
+}
+
+/* md-card */
+.mat-card {
+    margin: 24px auto;
 }
